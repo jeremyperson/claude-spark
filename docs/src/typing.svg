@@ -1,0 +1,53 @@
+<svg width="1280" height="360" viewBox="0 0 1280 360" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="t" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="7" stdDeviation="10" flood-color="#3B2A22" flood-opacity="0.20"/>
+    </filter>
+    <linearGradient id="bar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#D97757"/>
+      <stop offset="0.5" stop-color="#E8862E"/>
+      <stop offset="1" stop-color="#E5484D"/>
+    </linearGradient>
+    <path id="lg" clip-rule="evenodd" fill-rule="evenodd"
+      d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z"/>
+  </defs>
+
+  <rect width="1280" height="360" fill="#FBF7F0"/>
+
+  <g font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+    <text x="640" y="52" font-size="30" font-weight="800" fill="#3B2A22" text-anchor="middle">Type faster → the mascot heats up</text>
+
+    <g text-anchor="middle" font-size="21" font-weight="700">
+      <!-- slow -->
+      <g transform="translate(255,78)">
+        <rect width="150" height="150" rx="36" fill="#F5F1EA" filter="url(#t)"/>
+        <use href="#lg" transform="translate(35,35) scale(3.33)" fill="#D97757"/>
+      </g>
+      <text x="330" y="262" fill="#6B5648" text-anchor="middle">slow</text>
+
+      <!-- medium -->
+      <g transform="translate(565,78)">
+        <rect width="150" height="150" rx="36" fill="#F5F1EA" filter="url(#t)"/>
+        <use href="#lg" transform="translate(35,35) scale(3.33)" fill="#E8862E"/>
+        <rect x="48" y="104" width="15" height="15" rx="4" fill="#FFFFFF" stroke="#3B2A22" stroke-opacity="0.25"/>
+      </g>
+      <text x="640" y="262" fill="#6B5648" text-anchor="middle">medium</text>
+
+      <!-- fast -->
+      <g transform="translate(875,78)">
+        <rect x="-6" y="-6" width="162" height="162" rx="42" fill="none" stroke="#E5484D" stroke-width="5" opacity="0.5"/>
+        <rect width="150" height="150" rx="36" fill="#F5F1EA" filter="url(#t)"/>
+        <use href="#lg" transform="translate(35,35) scale(3.33)" fill="#E5484D"/>
+        <rect x="44" y="100" width="15" height="15" rx="4" fill="#FFFFFF" stroke="#3B2A22" stroke-opacity="0.25"/>
+        <rect x="92" y="110" width="13" height="13" rx="4" fill="#FFFFFF" stroke="#3B2A22" stroke-opacity="0.25"/>
+        <rect x="70" y="86" width="13" height="13" rx="4" fill="#FFFFFF" stroke="#3B2A22" stroke-opacity="0.25"/>
+      </g>
+      <text x="950" y="262" fill="#6B5648" text-anchor="middle">fast</text>
+    </g>
+
+    <!-- speed gradient bar -->
+    <rect x="255" y="300" width="770" height="16" rx="8" fill="url(#bar)"/>
+    <text x="255" y="340" font-size="16" font-weight="600" fill="#9A8275">0 keys / sec</text>
+    <text x="1025" y="340" font-size="16" font-weight="600" fill="#9A8275" text-anchor="end">8+ keys / sec</text>
+  </g>
+</svg>

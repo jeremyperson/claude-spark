@@ -1,167 +1,155 @@
-# Claude Spark ✦
+<p align="center">
+  <img src="docs/hero.png" alt="Claude Spark — an animated Claude Code mascot that lives on your Mac" width="100%">
+</p>
 
-An animated Claude Code mascot that **lives on your macOS desktop**. The official Claude
-Code logo floats in a corner, bobs and blinks while idle, and reacts to what Claude Code is
-doing — with project context, native notifications, nudges, and more.
+<h1 align="center">Claude Spark&nbsp;✦</h1>
+
+<p align="center">
+  <strong>An animated Claude&nbsp;Code mascot that lives on your macOS desktop.</strong><br>
+  It floats in the corner, reacts when Claude finishes, needs you, or you start typing — and heats up the faster you type.
+</p>
+
+<p align="center">
+  <a href="https://github.com/jeremyperson/claude-spark/releases/latest"><img alt="Release" src="https://img.shields.io/github/v/release/jeremyperson/claude-spark?color=D97757&label=release"></a>
+  <img alt="Platform" src="https://img.shields.io/badge/platform-macOS%2011%2B-555">
+  <img alt="Arch" src="https://img.shields.io/badge/arch-universal%20(Intel%20%2B%20Apple%20Silicon)-555">
+  <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-MIT-blue"></a>
+  <img alt="Unofficial" src="https://img.shields.io/badge/unofficial-fan--made-E8862E">
+</p>
+
+<p align="center">
+  <a href="https://github.com/jeremyperson/claude-spark/releases/download/claude-spark-v1.1.0/Claude.Spark-1.1.0-universal.dmg">
+    <img alt="Download Claude Spark" src="https://img.shields.io/badge/⬇%20Download-Claude%20Spark%201.1.0%20(.dmg)-D97757?style=for-the-badge">
+  </a>
+</p>
+
+---
+
+## What is Claude Spark?
+
+Claude&nbsp;Code does its work in the terminal — but your eyes aren't always on it. **Claude Spark** is a tiny, charming desktop companion that gives Claude&nbsp;Code an ambient, at-a-glance presence on your Mac.
+
+It's a transparent, always-on-top, click-through window showing the Claude&nbsp;Code mark on a soft cream card. It bobs and blinks while idle, then **animates in response to what Claude&nbsp;Code is actually doing** — driven by Claude&nbsp;Code's [hook system](https://docs.claude.com/en/docs/claude-code/hooks). No more wondering whether that long task finished or whether Claude is quietly waiting for your approval.
+
+> Think of it as a Tamagotchi for your AI pair-programmer. 🐣
+
+---
 
 ## Reactions
 
-| Claude Code event | Hook | Reaction |
+Claude Spark listens for Claude&nbsp;Code events and reacts with a distinct animation, a speech bubble, and an optional sound:
+
+<p align="center">
+  <img src="docs/states.png" alt="Claude Spark reaction states: Working, Done, Needs you, Error, Typing" width="100%">
+</p>
+
+| When… | Hook | The mascot… |
 |---|---|---|
-| You send a prompt | `UserPromptSubmit` | Pulses + tilts, "On it…" |
-| Long task (>2 min) | (derived) | Switches to a slower "Still working…" grind |
-| A subagent finishes | `SubagentStop` | Quick nod, "Subagent done" |
-| Claude needs you | `Notification` | Bounces + glow + chime + native banner; **escalating nudge** until you respond |
-| A tool runs | `PreToolUse` | Subtle micro-pulse + tool label (off by default) |
-| Claude finishes | `Stop` | Spins + sparkles, **"project · done in 2m14s"**, chime + native banner |
-| A turn fails | `StopFailure` | Red shake, "Something broke ⚠️" |
+| You send a prompt | `UserPromptSubmit` | pulses & tilts — *"On it…"* |
+| It runs long (>2 min) | *(derived)* | shifts to a slower *"Still working…"* grind |
+| A subagent finishes | `SubagentStop` | gives a quick nod |
+| **Claude needs you** | `Notification` | bounces with a glow + chime, and **escalates** until you respond — *"Needs your OK 👀"* |
+| **Claude finishes** | `Stop` | spins with sparkles + chime — *"project · done in 2m14s"* |
+| A turn fails | `StopFailure` | red shake — *"Something broke ⚠️"* |
+| A tool runs | `PreToolUse` | subtle micro-pulse *(off by default)* |
 
-## Typing reactions ⌨️
+Every reaction also fires a native macOS notification (unless muted), so you catch it even when looking away.
 
-When you type **anywhere**, the mascot bounces per keystroke and puffs little floating
-keycaps — and **heats up with your speed**: coral when slow → orange → glowing red when
-you're flying. (Schemes: `heat`, `cool`, `rainbow` in `config.json` → `keyboard.scheme`.)
+---
 
-- **Privacy:** this measures **keystroke *timing* only** — it never reads, stores, or sends
-  *which* keys you press. The code ignores the keycode entirely.
-- **Permission:** macOS requires **Accessibility** permission for system-wide key timing.
-  On first launch Spark offers to open Privacy & Security → Accessibility; enable
-  **Claude Spark** (or, when running from source, **Electron** / your terminal), then
-  right-click → **Retry typing access**.
-- **Preview without the permission:** `curl "http://127.0.0.1:47615/simulate-typing?n=60&interval=70"`
-  fires synthetic keystrokes so you can see the animation. Disable the whole feature via
-  `keyboard.enabled: false`.
+## ⌨️ Type-speed reactions
+
+Claude Spark watches your **typing cadence** and changes color with your speed — coral when you're cruising, glowing red when you're on fire — bouncing and puffing little keycaps as you go.
+
+<p align="center">
+  <img src="docs/typing.png" alt="The mascot changes color with typing speed: coral when slow, orange medium, glowing red when fast" width="100%">
+</p>
+
+> **Privacy first:** this measures keystroke **timing only** — it never reads, stores, or transmits *which* keys you press. The code ignores the keycode entirely. It requires macOS **Accessibility** permission (the app asks on first launch).
+
+---
+
+## Install
+
+1. **[⬇ Download the latest `.dmg`](https://github.com/jeremyperson/claude-spark/releases/latest)** and open it.
+2. Drag **Claude Spark** into **Applications**.
+3. First launch: the build is unsigned, so macOS Gatekeeper will warn — **right-click the app → Open → Open** (once).
+4. Claude Spark offers to install its Claude&nbsp;Code hooks into `~/.claude/settings.json`. Click **Install hooks**, then restart any open Claude&nbsp;Code sessions.
+5. *(Optional)* grant **Accessibility** permission when prompted to enable type-speed reactions.
+
+That's it — the spark now lives in your bottom-right corner. 🎉
+
+---
 
 ## Interactions
 
 - **Left-click** → focuses the terminal that needs you (raises the app the session runs in).
-- **Drag** → move the mascot anywhere; position is remembered (`state.json`).
-- **Right-click** → menu: **running Claude Code instances + per-instance uptime**, Animations
-  (Random/Calm + Play), Mute, Do Not Disturb, Reset position, Tasks today, retry typing access,
-  Open at login, Open config, Quit. Each running session is listed as `project — 1h 03m`.
-- `curl http://127.0.0.1:47615/sessions` returns the running instances + uptime as JSON.
-- Badges: 🔇 = muted, 🌙 = Do Not Disturb.
+- **Drag** → move it anywhere; its position is remembered.
+- **Right-click** → a full menu:
+  - **Running Claude&nbsp;Code instances + per-instance uptime** (`project — 1h 03m`)
+  - **Animations ▸** — *Random* (subtle idle flourishes) / *Calm*, plus **Play ▸** to trigger any animation on demand
+  - **Mute**, **Do Not Disturb**, **Reset position**, **Open at login**
+  - **Install / Remove hooks**, **Retry typing access**, **Open config.json**
+  - **About Claude Spark** (the disclaimer below)
+
+---
 
 ## How it works
 
-```
-Claude Code ──hook (curl POST JSON ?term=$TERM_PROGRAM)──▶ 127.0.0.1:47615 ──IPC──▶ animated mascot
-(~/.claude/settings.json)                                  (server in Electron main)
-```
+Claude&nbsp;Code hooks `curl` each event's JSON to a tiny HTTP server inside the app, which relays it to the animated window over IPC. Hooks use `curl -s --max-time 1`, so if Spark isn't running they fail instantly and **never block or slow down Claude&nbsp;Code**.
 
-Hooks use `curl -s --max-time 1`, so if the app isn't running they fail instantly and
-**never block or error Claude Code**. The `?term=$TERM_PROGRAM` query tells the app which
-terminal each session uses, powering click-to-focus.
-
-## Run it
-
-```bash
-cd /Applications/MAMP/htdocs/claudeCLICharacter
-npm install        # first time only
-npm start          # or ./start.sh (idempotent)
+```mermaid
+flowchart LR
+    CC["Claude Code<br/>(~/.claude/settings.json hooks)"] -- "curl POST JSON" --> S["Local server<br/>127.0.0.1:47615"]
+    S -- "IPC" --> R["Animated mascot<br/>(transparent window)"]
+    KB["Your keyboard"] -- "global timing only" --> R
+    R -- "left-click" --> T["Focus terminal"]
 ```
 
-## Configuration — `config.json`
+Bonus: `curl http://127.0.0.1:47615/sessions` returns running Claude&nbsp;Code instances and their uptime as JSON.
 
-User-editable; restart the app after changing. Missing keys fall back to defaults.
+---
 
-| Key | Meaning |
+## Configuration
+
+Settings live in `config.json` (in the app's data folder — right-click → **Open config.json**). Restart after editing; missing keys fall back to sensible defaults.
+
+| Key | What it does |
 |---|---|
-| `corner` | `bottom-right` (default), `bottom-left`, `top-right`, `top-left` — initial position |
+| `corner` | Starting corner: `bottom-right` (default), `bottom-left`, `top-right`, `top-left` |
 | `enabledEvents` | Per-event on/off switches |
-| `sounds` | `enabled` + per-state sound file URLs (default: macOS system sounds) |
+| `sounds` | `enabled` + per-state sound files (defaults to macOS system sounds) |
 | `bubbleDurationMs` | How long the speech bubble stays up |
 | `nudge` | `{enabled, afterMs, repeatMs, maxRepeats}` — escalating reminder when Claude needs you |
 | `longRunAfterMs` | When a running task flips to the "still working" state (default 120000) |
-| `toolReactions` | Show per-tool micro-reactions from `PreToolUse` (default `false` — high frequency) |
+| `toolReactions` | Per-tool micro-reactions from `PreToolUse` (default `false`) |
 | `showOnlyDuringSessions` | `{enabled, idleFadeMs}` — fade out when no session is active |
+| `keyboard` | `{enabled, scheme}` — type-speed reactions; scheme is `heat`, `cool`, or `rainbow` |
 
-`state.json` is written **by the app** (window position, mute, DND) — don't hand-edit; it's
-kept separate so it never clobbers your `config.json`.
+---
 
-## Test without Claude Code
-
-```bash
-U="http://127.0.0.1:47615/event?term=Apple_Terminal"
-curl -s -X POST "$U" -H 'Content-Type: application/json' -d '{"hook_event_name":"UserPromptSubmit","session_id":"s1","cwd":"/x/zenPayroll"}'
-curl -s -X POST "$U" -H 'Content-Type: application/json' -d '{"hook_event_name":"Stop","session_id":"s1","cwd":"/x/zenPayroll"}'
-curl -s -X POST "$U" -H 'Content-Type: application/json' -d '{"hook_event_name":"StopFailure"}'
-curl -s -X POST "$U" -H 'Content-Type: application/json' -d '{"hook_event_name":"Notification","notification_type":"permission_prompt"}'
-```
-
-## Hooks (installed in `~/.claude/settings.json`)
-
-8 events POST to the server: `Stop`, `StopFailure`, `Notification`, `UserPromptSubmit`,
-`SubagentStop`, `PreToolUse`, `SessionStart`, `SessionEnd`. The reference copy lives in
-`hooks.snippet.json` — merge it manually to reinstall elsewhere.
-
-## Install as a Mac app (for end users)
-
-A packaged `Claude Spark.dmg` is built into `release/`. To install:
-
-1. Open the `.dmg` and drag **Claude Spark** to **Applications**.
-2. First launch: because the build is **unsigned**, macOS Gatekeeper will warn. **Right-click
-   the app → Open → Open** (only needed once). *(If you later sign + notarize, this step goes away.)*
-3. On first run the app asks to **install the Claude Code hooks** into `~/.claude/settings.json`.
-   Click *Install hooks*, then restart any open Claude Code sessions.
-
-Once installed, the app is self-contained — it stores `config.json`/`state.json` in
-`~/Library/Application Support/Claude Spark/` (right-click → **Open config.json** to edit).
-Manage everything from the right-click menu: **Install/Remove hooks**, **Open at login**,
-Mute, Do Not Disturb, Reset position, Quit.
-
-## Build the app yourself
+## Build from source
 
 ```bash
-npm install            # includes electron-builder
-npm run icon           # build/icon.icns + icon.png from build/icon.svg (needs rsvg-convert)
-npm run dist           # -> release/Claude Spark-<ver>-arm64.dmg  and  -mac.zip  (unsigned)
+git clone https://github.com/jeremyperson/claude-spark.git
+cd claude-spark
+npm install
+npm start            # run in dev
+npm run dist         # build a universal .dmg + .zip into release/ (also copies the .dmg here)
 ```
 
-Build config lives in `electron-builder.config.js` (unsigned by default). **To distribute
-without the Gatekeeper warning**, sign + notarize:
+Requires Node, plus `rsvg-convert` (`brew install librsvg`) to regenerate the icon. Built with [Electron](https://www.electronjs.org/) + [electron-builder](https://www.electron.build/); global key timing via [`uiohook-napi`](https://github.com/SnosMe/uiohook-napi).
 
-```bash
-# after obtaining an Apple Developer ID cert + notarization creds — see SIGNING.md
-npm run dist:signed
-```
+### Signing & notarization
 
-The config flips to hardened-runtime signing + notarization when `SIGN=1` and credentials are
-present. Full step-by-step in **[SIGNING.md](SIGNING.md)**. (Mac App Store isn't viable here:
-its sandbox blocks writing to `~/.claude`.)
+Unsigned builds need the one-time *right-click → Open*. To distribute without the Gatekeeper warning, sign + notarize with an Apple Developer ID — the pipeline is wired and ready (`npm run dist:signed`). Full runbook: **[SIGNING.md](SIGNING.md)**.
 
-## Dev auto-launch (running from source, not the .app)
+---
 
-```bash
-cp com.jeremy.claudespark.plist ~/Library/LaunchAgents/
-launchctl load ~/Library/LaunchAgents/com.jeremy.claudespark.plist     # enable
-launchctl unload ~/Library/LaunchAgents/com.jeremy.claudespark.plist   # disable
-```
+## ⚖️ Disclaimer
 
-The **installed app** uses macOS Login Items instead (right-click → *Open at login*) — no plist needed.
+Claude Spark is an **unofficial, fan-made** project. It is **not affiliated with, endorsed by, sponsored by, or supported by Anthropic, PBC.** "Claude", "Claude&nbsp;Code", and related names and logos are trademarks of Anthropic, PBC, used here for identification/descriptive purposes only. All trademarks are the property of their respective owners. Provided **as-is, without warranty**.
 
-## Files
+## License
 
-| File | Role |
-|---|---|
-| `main.js` | Electron main: window, HTTP server, config/state, IPC, menu, terminal-focus, session tracking |
-| `preload.js` | Safe renderer bridge |
-| `index.html` / `style.css` / `renderer.js` | The animated mascot + state machine |
-| `config.json` / `state.json` | User prefs / app-written runtime state |
-| `claudecode-color.svg` | Source logo |
-| `start.sh`, `com.jeremy.claudespark.plist`, `hooks.snippet.json` | Launcher, auto-start, hooks |
-
-## Legal / disclaimer
-
-Claude Spark is an **unofficial, fan-made** desktop companion for Claude Code. It is **not
-affiliated with, endorsed by, sponsored by, or supported by Anthropic, PBC.** "Claude",
-"Claude Code", and related names and logos are trademarks of Anthropic, PBC, used here for
-identification/descriptive purposes only. All trademarks are the property of their respective
-owners. Provided as-is, without warranty. © 2026 Jeremy Person. (Also shown in the app's
-right-click → **About Claude Spark**.)
-
-## Notes / limitations
-
-- Click-to-focus activates the terminal **app** (Terminal, iTerm, VS Code, Warp, Ghostty, …),
-  not a specific tab/window.
-- Native notifications use the renderer `Notification` API; macOS may prompt once to allow them.
+[MIT](LICENSE) © 2026 Jeremy Person

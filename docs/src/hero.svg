@@ -1,0 +1,55 @@
+<svg width="1280" height="440" viewBox="0 0 1280 440" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FBF7F0"/>
+      <stop offset="1" stop-color="#F3E3D8"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#3B2A22" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="440" fill="url(#bg)"/>
+
+  <!-- left: wordmark + tagline -->
+  <g font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+    <text x="90" y="170" font-size="74" font-weight="800" fill="#3B2A22">Claude Spark</text>
+    <text x="92" y="168" font-size="74" font-weight="800" fill="#D97757" opacity="0.0">Claude Spark</text>
+    <text x="640" y="150" font-size="60" fill="#D97757" font-weight="800">✦</text>
+    <text x="90" y="232" font-size="30" fill="#6B5648" font-weight="500">An animated Claude Code mascot that lives on your Mac.</text>
+    <text x="90" y="278" font-size="22" fill="#9A8275" font-weight="500">Reacts when Claude finishes, needs you, or you start typing.</text>
+
+    <!-- pills -->
+    <g font-size="20" font-weight="700">
+      <rect x="90" y="320" width="150" height="42" rx="21" fill="#D97757"/>
+      <text x="165" y="348" fill="#FFFFFF" text-anchor="middle">macOS</text>
+      <rect x="252" y="320" width="170" height="42" rx="21" fill="#FFFFFF" stroke="#E2C9BA" stroke-width="2"/>
+      <text x="337" y="348" fill="#C2613F" text-anchor="middle">Universal</text>
+      <rect x="434" y="320" width="220" height="42" rx="21" fill="#FFFFFF" stroke="#E2C9BA" stroke-width="2"/>
+      <text x="544" y="348" fill="#C2613F" text-anchor="middle">Unofficial · fan-made</text>
+    </g>
+  </g>
+
+  <!-- right: mascot card with speech bubble -->
+  <g transform="translate(905,90)">
+    <!-- speech bubble -->
+    <g filter="url(#shadow)">
+      <rect x="36" y="-8" width="220" height="64" rx="18" fill="#FFFFFF"/>
+      <path d="M120 52 l18 0 l-9 16 z" fill="#FFFFFF"/>
+    </g>
+    <text x="146" y="34" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#3B2A22" text-anchor="middle">Done!</text>
+
+    <!-- cream card -->
+    <g filter="url(#shadow)" transform="translate(60,90)">
+      <rect width="240" height="240" rx="54" fill="#F5F1EA"/>
+      <g transform="translate(48,48) scale(6)">
+        <path clip-rule="evenodd" fill-rule="evenodd" fill="#D97757"
+          d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z"/>
+      </g>
+    </g>
+    <!-- sparkles -->
+    <text x="44" y="120" font-size="34" fill="#D97757">✦</text>
+    <text x="330" y="150" font-size="26" fill="#E8862E">✧</text>
+    <text x="316" y="330" font-size="30" fill="#D97757">✦</text>
+  </g>
+</svg>
