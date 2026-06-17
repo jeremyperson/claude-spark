@@ -1,0 +1,26 @@
+{
+  "name": "claude-spark",
+  "version": "1.1.0",
+  "productName": "Claude Spark",
+  "description": "An animated Claude Code mascot that lives on your macOS desktop and reacts to Claude Code events (finished, needs input, started working, subagent done).",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "icon": "bash build/make-icon.sh",
+    "dist": "npm run icon && electron-builder --mac --config electron-builder.config.js",
+    "postdist": "npm run copy-dmg",
+    "dist:signed": "npm run icon && SIGN=1 electron-builder --mac --config electron-builder.config.js",
+    "postdist:signed": "npm run copy-dmg",
+    "copy-dmg": "cp release/*.dmg .",
+    "pack": "electron-builder --mac dir --config electron-builder.config.js"
+  },
+  "author": "Jeremy Person",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "dependencies": {
+    "uiohook-napi": "^1.5.5"
+  }
+}

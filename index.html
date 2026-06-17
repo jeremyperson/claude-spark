@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude Spark</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="stage">
+    <!-- Speech bubble -->
+    <div id="bubble" class="bubble hidden">
+      <span id="bubble-text"></span>
+    </div>
+
+    <!-- The character. Hovering makes the window clickable; drag to move;
+         left-click focuses the terminal; right-click opens the menu. -->
+    <div id="character" class="character state-idle" title="Claude Code — click to focus terminal, drag to move, right-click for menu">
+      <div class="card">
+        <!-- Official Claude Code logo mark -->
+        <svg class="logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <title>Claude Code</title>
+          <path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"></path>
+        </svg>
+        <!-- tiny tool label (PreToolUse, when enabled) -->
+        <div id="tool-label" class="tool-label hidden"></div>
+      </div>
+
+      <!-- floating keycaps emitted while typing -->
+      <div id="keycaps" class="keycaps"></div>
+
+      <!-- sparkles shown on "done" -->
+      <div class="sparkles">
+        <span class="sp s1">✦</span>
+        <span class="sp s2">✧</span>
+        <span class="sp s3">✦</span>
+      </div>
+
+      <!-- badges -->
+      <div id="mute" class="badge mute hidden">🔇</div>
+      <div id="dnd" class="badge dnd hidden">🌙</div>
+    </div>
+  </div>
+
+  <!-- Sound element; src is set from config at runtime. -->
+  <audio id="snd" preload="auto"></audio>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

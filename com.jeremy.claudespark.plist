@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- LaunchAgent template for Claude Spark.
+     Install:
+       cp com.jeremy.claudespark.plist ~/Library/LaunchAgents/
+       launchctl load ~/Library/LaunchAgents/com.jeremy.claudespark.plist
+     Disable:
+       launchctl unload ~/Library/LaunchAgents/com.jeremy.claudespark.plist
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.jeremy.claudespark</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/Applications/MAMP/htdocs/claudeCLICharacter/start.sh</string>
+  </array>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>StandardOutPath</key>
+  <string>/tmp/claude-spark.log</string>
+  <key>StandardErrorPath</key>
+  <string>/tmp/claude-spark.err</string>
+</dict>
+</plist>

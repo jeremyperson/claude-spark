@@ -1,0 +1,29 @@
+{
+  "_comment": "Merge this 'hooks' block into ~/.claude/settings.json (preserve existing keys). Each event pipes its stdin JSON to the Claude Spark server. The ?term=$TERM_PROGRAM query lets click-to-focus raise the right terminal app. -s --max-time 1 means hooks never hang or error Claude Code if the app is not running.",
+  "hooks": {
+    "Stop": [
+      { "hooks": [ { "type": "command", "command": "curl -s --max-time 1 -X POST \"http://127.0.0.1:47615/event?term=$TERM_PROGRAM\" -H 'Content-Type: application/json' -d @-" } ] }
+    ],
+    "StopFailure": [
+      { "hooks": [ { "type": "command", "command": "curl -s --max-time 1 -X POST \"http://127.0.0.1:47615/event?term=$TERM_PROGRAM\" -H 'Content-Type: application/json' -d @-" } ] }
+    ],
+    "Notification": [
+      { "hooks": [ { "type": "command", "command": "curl -s --max-time 1 -X POST \"http://127.0.0.1:47615/event?term=$TERM_PROGRAM\" -H 'Content-Type: application/json' -d @-" } ] }
+    ],
+    "UserPromptSubmit": [
+      { "hooks": [ { "type": "command", "command": "curl -s --max-time 1 -X POST \"http://127.0.0.1:47615/event?term=$TERM_PROGRAM\" -H 'Content-Type: application/json' -d @-" } ] }
+    ],
+    "SubagentStop": [
+      { "hooks": [ { "type": "command", "command": "curl -s --max-time 1 -X POST \"http://127.0.0.1:47615/event?term=$TERM_PROGRAM\" -H 'Content-Type: application/json' -d @-" } ] }
+    ],
+    "PreToolUse": [
+      { "hooks": [ { "type": "command", "command": "curl -s --max-time 1 -X POST \"http://127.0.0.1:47615/event?term=$TERM_PROGRAM\" -H 'Content-Type: application/json' -d @-" } ] }
+    ],
+    "SessionStart": [
+      { "hooks": [ { "type": "command", "command": "curl -s --max-time 1 -X POST \"http://127.0.0.1:47615/event?term=$TERM_PROGRAM\" -H 'Content-Type: application/json' -d @-" } ] }
+    ],
+    "SessionEnd": [
+      { "hooks": [ { "type": "command", "command": "curl -s --max-time 1 -X POST \"http://127.0.0.1:47615/event?term=$TERM_PROGRAM\" -H 'Content-Type: application/json' -d @-" } ] }
+    ]
+  }
+}

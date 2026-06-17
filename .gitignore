@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Build output / packaged artifacts (distributed via GitHub Releases, not git)
+release/
+*.dmg
+*.zip
+
+# Generated icon artifacts (regenerate with `npm run icon`)
+build/icon.icns
+build/icon.png
+build/icon.iconset/
+
+# App-written runtime state
+state.json
+
+# macOS noise
+.DS_Store
+
+# Local Claude Code project settings
+.claude/

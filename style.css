@@ -1,0 +1,203 @@
+/* Claude Spark — desktop mascot styling.
+   The window is transparent; only the character + bubble paint.
+   The character is the official Claude Code logo on a soft cream card. */
+
+:root {
+  --coral: #D97757;
+  --coral-deep: #C2613F;
+  --cream: #F5F1EA;
+  --ink: #3B2A22;
+  --red: #C0392B;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* show-only-during-sessions fade */
+body { transition: opacity 0.6s ease; }
+body.faded { opacity: 0; pointer-events: none; }
+
+#stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 14px;
+}
+
+/* ---------- Character ---------- */
+.character {
+  position: relative;
+  width: 116px;
+  height: 116px;
+  cursor: pointer;
+  animation: idle-bob 3.2s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+.card {
+  position: relative;
+  width: 116px;
+  height: 116px;
+  border-radius: 26px;
+  background: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 18px rgba(60, 30, 15, 0.28);
+  transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.logo { width: 74px; height: 74px; transform-origin: center; }
+.logo path { transition: fill 0.2s ease; }
+
+/* tool label (PreToolUse) */
+.tool-label {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--coral-deep);
+  background: rgba(217,119,87,0.14);
+  padding: 1px 6px;
+  border-radius: 8px;
+  text-transform: uppercase;
+}
+.tool-label.hidden { display: none; }
+.character.tooltick .card { transform: scale(0.96); }
+
+/* per-keystroke bounce (subtle, layered over idle/working) */
+.character.keytap .card { transform: translateY(-4px) scale(1.03); }
+
+/* floating keycaps emitted while typing */
+.keycaps { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
+.keycap {
+  position: absolute;
+  top: 34%;
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
+  border-radius: 4px;
+  background: var(--cream);
+  border: 1.5px solid rgba(60,30,15,0.25);
+  box-shadow: 0 2px 3px rgba(60,30,15,0.25);
+  opacity: 0;
+  animation: keycap-float 0.7s ease-out forwards;
+}
+@keyframes keycap-float {
+  0%   { opacity: 0; transform: translateY(4px) scale(0.6); }
+  25%  { opacity: 1; transform: translateY(-6px) scale(1); }
+  100% { opacity: 0; transform: translate(var(--drift, 0), -34px) scale(0.85); }
+}
+
+/* sparkles */
+.sparkles { position: absolute; inset: -6px; pointer-events: none; opacity: 0; }
+.sp { position: absolute; color: var(--coral); font-size: 18px; opacity: 0; }
+.sp.s1 { top: -4px;  left: 2px; }
+.sp.s2 { top: 0;     right: 0; }
+.sp.s3 { bottom: -4px; left: 50%; }
+
+/* badges */
+.badge { position: absolute; font-size: 15px; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.3)); }
+.badge.hidden { display: none; }
+.mute { bottom: -2px; right: -2px; }
+.dnd  { bottom: -2px; left: -2px; }
+
+/* ---------- Speech bubble ---------- */
+.bubble {
+  position: relative;
+  max-width: 210px;
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  background: var(--cream);
+  color: var(--ink);
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.25;
+  box-shadow: 0 4px 12px rgba(60, 30, 15, 0.25);
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 8px 7px 0 7px;
+  border-style: solid;
+  border-color: var(--cream) transparent transparent transparent;
+}
+.bubble.hidden { opacity: 0; transform: translateY(6px) scale(0.96); pointer-events: none; }
+
+/* ---------- State reactions ---------- */
+
+/* working: quick pulse + slow logo spin */
+.character.state-working { animation: working-pulse 0.9s ease-in-out infinite; }
+.character.state-working .logo { animation: spin-slow 4s linear infinite; }
+
+/* longrun: slower, heavier "grinding" */
+.character.state-longrun { animation: longrun-sway 2.4s ease-in-out infinite; }
+.character.state-longrun .logo { animation: spin-slow 7s linear infinite; }
+.character.state-longrun .card { background: #efe7da; }
+
+/* done: card pops, logo spins once, sparkles burst */
+.character.state-done .card { animation: done-pop 0.7s ease; }
+.character.state-done .logo { animation: spin-once 0.7s ease; }
+.character.state-done .sparkles { animation: sparkle 0.9s ease; }
+.character.state-done .sparkles .sp { animation: sparkle-pop 0.9s ease; }
+
+/* attention: bouncy, deeper coral + glow ring */
+.character.state-attention { animation: attention-bounce 0.55s ease-in-out infinite; }
+.character.state-attention .card { box-shadow: 0 0 0 3px rgba(217,119,87,0.55), 0 8px 18px rgba(60,30,15,0.28); }
+.character.state-attention .logo path { fill: var(--coral-deep); }
+
+/* error: red shake */
+.character.state-error { animation: err-shake 0.5s ease; }
+.character.state-error .card { background: #fbe8e6; box-shadow: 0 0 0 3px rgba(192,57,43,0.5), 0 8px 18px rgba(60,30,15,0.28); }
+.character.state-error .logo path { fill: var(--red); }
+
+/* subagent: subtle nod */
+.character.state-subagent { animation: nod 0.8s ease; }
+
+/* escalating nudge (independent of state) */
+.character.nudge { animation: nudge-jump 0.35s ease 2; }
+
+/* random idle flourishes (Animations menu) */
+.character.flourish-spin .logo { animation: spin-once 0.8s ease; }
+.character.flourish-wiggle { animation: wiggle 0.7s ease; }
+.character.flourish-hop { animation: hop 0.6s ease; }
+
+/* ---------- Keyframes ---------- */
+@keyframes idle-bob { 0%,100%{transform:translateY(0) scale(1);} 50%{transform:translateY(-7px) scale(1.01);} }
+@keyframes working-pulse { 0%,100%{transform:translateY(0) rotate(-2deg) scale(1);} 50%{transform:translateY(-3px) rotate(2deg) scale(1.03);} }
+@keyframes longrun-sway { 0%,100%{transform:rotate(-3deg);} 50%{transform:rotate(3deg);} }
+@keyframes spin-slow { from{transform:rotate(0);} to{transform:rotate(360deg);} }
+@keyframes spin-once { from{transform:rotate(0);} to{transform:rotate(360deg);} }
+@keyframes done-pop { 0%{transform:scale(1);} 40%{transform:scale(1.14) translateY(-8px);} 100%{transform:scale(1) translateY(0);} }
+@keyframes sparkle { 0%,100%{opacity:0;} 30%,70%{opacity:1;} }
+@keyframes sparkle-pop { 0%{opacity:0;transform:scale(0.4);} 50%{opacity:1;transform:scale(1.3);} 100%{opacity:0;transform:scale(0.8);} }
+@keyframes attention-bounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-12px);} }
+@keyframes err-shake { 0%,100%{transform:translateX(0);} 20%{transform:translateX(-6px);} 40%{transform:translateX(6px);} 60%{transform:translateX(-4px);} 80%{transform:translateX(4px);} }
+@keyframes nod { 0%,100%{transform:rotate(0);} 30%{transform:rotate(8deg) translateY(2px);} 60%{transform:rotate(-4deg);} }
+@keyframes nudge-jump { 0%,100%{transform:translateY(0) scale(1);} 50%{transform:translateY(-18px) scale(1.06);} }
+@keyframes wiggle { 0%,100%{transform:rotate(0);} 20%{transform:rotate(-10deg);} 40%{transform:rotate(8deg);} 60%{transform:rotate(-6deg);} 80%{transform:rotate(4deg);} }
+@keyframes hop { 0%,100%{transform:translateY(0);} 35%{transform:translateY(-22px) scale(1.05);} 60%{transform:translateY(0) scale(0.97);} }

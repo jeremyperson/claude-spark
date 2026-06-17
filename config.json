@@ -1,0 +1,24 @@
+{
+  "_comment": "User-editable Claude Spark preferences. Delete a key to fall back to its default. Restart the app after editing.",
+  "corner": "bottom-right",
+  "enabledEvents": {
+    "Stop": true,
+    "StopFailure": true,
+    "Notification": true,
+    "UserPromptSubmit": true,
+    "SubagentStop": true,
+    "PreToolUse": true
+  },
+  "sounds": {
+    "enabled": true,
+    "done": "file:///System/Library/Sounds/Glass.aiff",
+    "attention": "file:///System/Library/Sounds/Funk.aiff",
+    "error": "file:///System/Library/Sounds/Sosumi.aiff"
+  },
+  "bubbleDurationMs": 4000,
+  "nudge": { "enabled": true, "afterMs": 12000, "repeatMs": 9000, "maxRepeats": 4 },
+  "longRunAfterMs": 120000,
+  "toolReactions": false,
+  "showOnlyDuringSessions": { "enabled": false, "idleFadeMs": 180000 },
+  "keyboard": { "enabled": true, "scheme": "heat" }
+}
