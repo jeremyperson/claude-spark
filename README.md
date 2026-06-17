@@ -5,12 +5,17 @@
 <h1 align="center">Claude Spark&nbsp;✦</h1>
 
 <p align="center">
-  <strong>An animated Claude&nbsp;Code mascot that lives on your macOS desktop.</strong><br>
-  It floats in the corner, reacts when Claude finishes, needs you, or you start typing — and heats up the faster you type.
+  <strong>An animated desktop mascot for the Claude&nbsp;Code CLI (command-line interface).</strong><br>
+  It floats in the corner of your Mac and reacts when Claude finishes, needs you, or you start typing — and heats up the faster you type.
+</p>
+
+<p align="center">
+  <sub>🖥️ Built for <a href="https://docs.claude.com/en/docs/claude-code">Claude&nbsp;Code</a> — Anthropic's <strong>command-line</strong> coding agent that runs in your terminal. Claude Spark is a companion <em>for</em> the CLI; it isn't a GUI or browser extension.</sub>
 </p>
 
 <p align="center">
   <a href="https://github.com/jeremyperson/claude-spark/releases/latest"><img alt="Release" src="https://img.shields.io/github/v/release/jeremyperson/claude-spark?color=D97757&label=release"></a>
+  <img alt="For" src="https://img.shields.io/badge/for-Claude%20Code%20CLI-D97757">
   <img alt="Platform" src="https://img.shields.io/badge/platform-macOS%2011%2B-555">
   <img alt="Arch" src="https://img.shields.io/badge/arch-universal%20(Intel%20%2B%20Apple%20Silicon)-555">
   <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-MIT-blue"></a>
@@ -27,7 +32,7 @@
 
 ## What is Claude Spark?
 
-Claude&nbsp;Code does its work in the terminal — but your eyes aren't always on it. **Claude Spark** is a tiny, charming desktop companion that gives Claude&nbsp;Code an ambient, at-a-glance presence on your Mac.
+[**Claude&nbsp;Code**](https://docs.claude.com/en/docs/claude-code) is Anthropic's **command-line interface (CLI)** for Claude — an AI coding agent you run in your terminal. It does its work in the terminal, but your eyes aren't always on it. **Claude Spark** is a tiny, charming desktop companion that gives the Claude&nbsp;Code CLI an ambient, at-a-glance presence on your Mac.
 
 It's a transparent, always-on-top, click-through window showing the Claude&nbsp;Code mark on a soft cream card. It bobs and blinks while idle, then **animates in response to what Claude&nbsp;Code is actually doing** — driven by Claude&nbsp;Code's [hook system](https://docs.claude.com/en/docs/claude-code/hooks). No more wondering whether that long task finished or whether Claude is quietly waiting for your approval.
 

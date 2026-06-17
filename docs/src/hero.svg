@@ -16,8 +16,8 @@
     <text x="90" y="170" font-size="74" font-weight="800" fill="#3B2A22">Claude Spark</text>
     <text x="92" y="168" font-size="74" font-weight="800" fill="#D97757" opacity="0.0">Claude Spark</text>
     <text x="640" y="150" font-size="60" fill="#D97757" font-weight="800">✦</text>
-    <text x="90" y="232" font-size="30" fill="#6B5648" font-weight="500">An animated Claude Code mascot that lives on your Mac.</text>
-    <text x="90" y="278" font-size="22" fill="#9A8275" font-weight="500">Reacts when Claude finishes, needs you, or you start typing.</text>
+    <text x="90" y="232" font-size="30" fill="#6B5648" font-weight="500">An animated desktop mascot for the Claude Code CLI.</text>
+    <text x="90" y="278" font-size="22" fill="#9A8275" font-weight="500">The command-line coding agent — now with a face on your Mac.</text>
 
     <!-- pills -->
     <g font-size="20" font-weight="700">
