@@ -23,8 +23,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/jeremyperson/claude-spark/releases/download/claude-spark-v1.2.0/Claude.Spark-1.2.0-universal.dmg">
-    <img alt="Download Claude Spark" src="https://img.shields.io/badge/⬇%20Download-Claude%20Spark%201.2.0%20(.dmg)-D97757?style=for-the-badge">
+  <a href="https://github.com/jeremyperson/claude-spark/releases/download/claude-spark-v1.2.1/Claude.Spark-1.2.1-universal.dmg">
+    <img alt="Download Claude Spark" src="https://img.shields.io/badge/⬇%20Download-Claude%20Spark%201.2.1%20(.dmg)-D97757?style=for-the-badge">
   </a>
 </p>
 

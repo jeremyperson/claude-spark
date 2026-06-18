@@ -55,7 +55,7 @@ This signs the app (hardened runtime + `build/entitlements.mac.plist`, including
 APP="release/mac-universal/Claude Spark.app"
 codesign --verify --deep --strict --verbose=2 "$APP"
 spctl -a -vvv -t install "$APP"                       # => accepted, source=Notarized Developer ID
-xcrun stapler validate "release/Claude Spark-1.2.0-universal.dmg"
+xcrun stapler validate "release/Claude Spark-1.2.1-universal.dmg"
 ```
 
 ## Notes
