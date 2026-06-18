@@ -1,0 +1,50 @@
+<svg width="1280" height="520" viewBox="0 0 1280 520" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FBF7F0"/><stop offset="1" stop-color="#F3E3D8"/>
+    </linearGradient>
+    <filter id="sh2" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#3B2A22" flood-opacity="0.22"/>
+    </filter>
+    <path id="logo2" clip-rule="evenodd" fill-rule="evenodd"
+      d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z"/>
+  </defs>
+  <rect width="1280" height="520" fill="url(#bg2)"/>
+
+  <g font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+    <text x="640" y="58" font-size="30" font-weight="800" fill="#3B2A22" text-anchor="middle">Lives in your menu bar too</text>
+
+    <!-- faux menu bar strip (top-right corner of a display) -->
+    <g transform="translate(0,90)">
+      <rect x="640" y="0" width="640" height="40" fill="#FFFFFF" opacity="0.92"/>
+      <g fill="#3B2A22" opacity="0.55" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="15" font-weight="600">
+        <!-- generic status glyphs as simple shapes -->
+        <circle cx="900" cy="20" r="6"/>
+        <rect x="940" y="13" width="22" height="14" rx="3"/>
+        <text x="1000" y="25">100%</text>
+        <text x="1070" y="25">Fri 9:41</text>
+        <text x="1150" y="25">Q</text>
+      </g>
+      <!-- highlighted Claude Spark menu-bar icon -->
+      <rect x="845" y="2" width="36" height="36" rx="6" fill="#3B2A22" opacity="0.08"/>
+      <use href="#logo2" transform="translate(851,8) scale(0.99)" fill="#3B2A22"/>
+    </g>
+
+    <!-- dropdown menu -->
+    <g transform="translate(700,138)" filter="url(#sh2)">
+      <rect width="360" height="300" rx="14" fill="#FFFFFF"/>
+    </g>
+    <g transform="translate(700,138)" font-size="17" fill="#3B2A22">
+      <text x="22" y="38" font-weight="700" fill="#9A8275">Claude Code running: 2</text>
+      <text x="38" y="68">zenPayroll — 1h 03m</text>
+      <text x="38" y="94">knowledgebase — 8m</text>
+      <line x1="16" y1="112" x2="344" y2="112" stroke="#EADFD3" stroke-width="1.5"/>
+      <text x="22" y="140">Tasks today: 7</text>
+      <text x="22" y="170">Show / hide mascot</text>
+      <text x="22" y="200">Mute · Do Not Disturb</text>
+      <text x="22" y="230">Animations ▸   ·   Music mini-player ✓</text>
+      <line x1="16" y1="248" x2="344" y2="248" stroke="#EADFD3" stroke-width="1.5"/>
+      <text x="22" y="276">About · Quit Claude Spark</text>
+    </g>
+  </g>
+</svg>

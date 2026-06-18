@@ -1,0 +1,55 @@
+<svg width="1280" height="520" viewBox="0 0 1280 520" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FBF7F0"/><stop offset="1" stop-color="#F3E3D8"/>
+    </linearGradient>
+    <filter id="sh" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="7" stdDeviation="11" flood-color="#3B2A22" flood-opacity="0.22"/>
+    </filter>
+    <path id="logo" clip-rule="evenodd" fill-rule="evenodd"
+      d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z"/>
+  </defs>
+  <rect width="1280" height="520" fill="url(#bg)"/>
+
+  <g font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+    <text x="640" y="64" font-size="30" font-weight="800" fill="#3B2A22" text-anchor="middle">A now-playing player, right under the mascot</text>
+    <text x="640" y="98" font-size="19" font-weight="500" fill="#9A8275" text-anchor="middle">Spotify &amp; Apple Music — native apps only, never browser/YouTube audio</text>
+
+    <!-- mascot card -->
+    <g filter="url(#sh)" transform="translate(580,140)">
+      <rect width="120" height="120" rx="28" fill="#F5F1EA"/>
+      <use href="#logo" transform="translate(26,26) scale(2.83)" fill="#D97757"/>
+    </g>
+
+    <!-- music pill beneath -->
+    <g transform="translate(420,288)">
+      <rect width="440" height="108" rx="20" fill="#F5F1EA" filter="url(#sh)"/>
+      <!-- album art -->
+      <rect x="18" y="18" width="72" height="72" rx="12" fill="#D97757"/>
+      <ellipse cx="46" cy="66" rx="11" ry="9" fill="#F5F1EA"/>
+      <rect x="55" y="34" width="5" height="30" fill="#F5F1EA"/>
+      <rect x="55" y="34" width="16" height="5" fill="#F5F1EA"/>
+      <!-- title + artist -->
+      <text x="108" y="46" font-size="21" font-weight="700" fill="#3B2A22">Midnight City</text>
+      <text x="108" y="72" font-size="16" font-weight="500" fill="#9A8275">M83 — Hurry Up, We're Dreaming</text>
+      <!-- transport controls (vector shapes) -->
+      <g fill="#C2613F" transform="translate(330,82)">
+        <!-- prev -->
+        <g transform="translate(0,0)">
+          <rect x="0" y="-9" width="4" height="18" rx="1.5"/>
+          <path d="M16 -9 L16 9 L4 0 Z"/>
+        </g>
+        <!-- play/pause (paused = two bars) -->
+        <g transform="translate(42,0)">
+          <rect x="0" y="-10" width="6" height="20" rx="2"/>
+          <rect x="11" y="-10" width="6" height="20" rx="2"/>
+        </g>
+        <!-- next -->
+        <g transform="translate(84,0)">
+          <path d="M0 -9 L0 9 L12 0 Z"/>
+          <rect x="12" y="-9" width="4" height="18" rx="1.5"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

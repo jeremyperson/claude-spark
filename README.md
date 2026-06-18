@@ -23,8 +23,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/jeremyperson/claude-spark/releases/download/claude-spark-v1.1.0/Claude.Spark-1.1.0-universal.dmg">
-    <img alt="Download Claude Spark" src="https://img.shields.io/badge/⬇%20Download-Claude%20Spark%201.1.0%20(.dmg)-D97757?style=for-the-badge">
+  <a href="https://github.com/jeremyperson/claude-spark/releases/download/claude-spark-v1.2.0/Claude.Spark-1.2.0-universal.dmg">
+    <img alt="Download Claude Spark" src="https://img.shields.io/badge/⬇%20Download-Claude%20Spark%201.2.0%20(.dmg)-D97757?style=for-the-badge">
   </a>
 </p>
 
@@ -73,6 +73,32 @@ Claude Spark watches your **typing cadence** and changes color with your speed �
 > **Privacy first:** this measures keystroke **timing only** — it never reads, stores, or transmits *which* keys you press. The code ignores the keycode entirely. It requires macOS **Accessibility** permission (the app asks on first launch).
 
 ---
+
+## 🎵 Now-playing mini-player
+
+When you're playing music in a **native** app — **Spotify** or **Apple Music** — a compact
+player tucks in right beneath the mascot: album art, title, artist, and **play / pause / next /
+previous** controls. It's wired through each app's AppleScript, so it covers those desktop apps
+only and **ignores browser/YouTube audio** by design.
+
+<p align="center">
+  <img src="docs/miniplayer.png" alt="Now-playing mini-player beneath the mascot, showing album art, track, and transport controls" width="100%">
+</p>
+
+> Reading and controlling another app needs a one-time macOS **Automation** permission
+> ("Claude Spark wants to control Spotify"). Toggle the whole feature from the menu or
+> `config.json` (`musicPlayer`).
+
+## 🖥️ Lives in your menu bar
+
+Claude Spark also adds a **menu-bar icon** (top-right of your screen) with the full menu —
+running Claude Code instances and their uptime, Tasks today, Animations, hooks, the music
+toggle, and **Show / Hide mascot** so you can tuck the floating window away while keeping the
+menu-bar presence.
+
+<p align="center">
+  <img src="docs/menubar.png" alt="Claude Spark menu-bar icon with its dropdown menu showing running sessions, uptime, and controls" width="100%">
+</p>
 
 ## Install
 

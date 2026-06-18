@@ -1,6 +1,6 @@
 {
   "name": "claude-spark",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "productName": "Claude Spark",
   "description": "An animated Claude Code mascot that lives on your macOS desktop and reacts to Claude Code events (finished, needs input, started working, subagent done).",
   "main": "main.js",
