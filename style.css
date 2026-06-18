@@ -118,6 +118,74 @@ body.faded { opacity: 0; pointer-events: none; }
 .mute { bottom: -2px; right: -2px; }
 .dnd  { bottom: -2px; left: -2px; }
 
+/* ---------- Music mini-player ---------- */
+.miniplayer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 216px;
+  background: var(--cream);
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(60, 30, 15, 0.25);
+  /* sits BELOW the mascot; hidden by default (collapsed + faded), slides in when .playing.
+     The gap to the mascot is a small margin-TOP so it tucks in close above it. */
+  opacity: 0;
+  transform: translateY(-6px) scale(0.96);
+  max-height: 0;
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 8px;
+  padding-right: 8px;
+  overflow: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease, max-height 0.25s ease,
+              margin-top 0.25s ease, padding 0.25s ease;
+}
+.miniplayer.playing {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  max-height: 80px;
+  margin-top: 4px;
+  padding: 8px;
+  pointer-events: auto;
+}
+
+.mp-art {
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  border-radius: 8px;
+  background: var(--coral);
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.mp-note { color: var(--cream); font-size: 22px; line-height: 1; }
+.mp-art.has-art .mp-note { display: none; }
+
+.mp-info { flex: 1 1 auto; min-width: 0; }
+.mp-title {
+  font-size: 12px; font-weight: 700; color: var(--ink);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.mp-artist {
+  font-size: 11px; font-weight: 500; color: #9A8275;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-bottom: 3px;
+}
+.mp-controls { display: flex; gap: 6px; }
+.mp-btn {
+  border: none; background: transparent; cursor: pointer;
+  font-size: 13px; line-height: 1; padding: 2px 4px; border-radius: 6px;
+  color: var(--coral-deep);
+}
+.mp-btn:hover { background: rgba(217, 119, 87, 0.15); }
+.mp-btn:active { transform: scale(0.9); }
+
 /* ---------- Speech bubble ---------- */
 .bubble {
   position: relative;

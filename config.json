@@ -20,5 +20,6 @@
   "longRunAfterMs": 120000,
   "toolReactions": false,
   "showOnlyDuringSessions": { "enabled": false, "idleFadeMs": 180000 },
-  "keyboard": { "enabled": true, "scheme": "heat" }
+  "keyboard": { "enabled": true, "scheme": "heat" },
+  "musicPlayer": { "enabled": true, "pollMs": 2500 }
 }

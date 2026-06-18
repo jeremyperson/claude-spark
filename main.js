@@ -2,7 +2,7 @@
 // Transparent, always-on-top, click-through floating window showing an animated
 // Claude Code mascot, plus a tiny local HTTP server that Claude Code hooks POST to.
 
-const { app, BrowserWindow, ipcMain, screen, Menu, shell, dialog, systemPreferences } = require('electron');
+const { app, BrowserWindow, ipcMain, screen, Menu, shell, dialog, systemPreferences, Tray, nativeImage } = require('electron');
 const http = require('http');
 const path = require('path');
 const fs = require('fs');
@@ -11,7 +11,7 @@ const { execFile } = require('child_process');
 
 const PORT = 47615;
 const WIN_W = 240;
-const WIN_H = 280;
+const WIN_H = 376; // tall enough to host the music mini-player pill above the mascot
 
 // Writable files live in userData for a packaged (read-only) bundle; in dev we
 // keep them next to the source so editing config.json works as before.
@@ -64,6 +64,7 @@ const DEFAULT_CONFIG = {
   toolReactions: false,
   showOnlyDuringSessions: { enabled: false, idleFadeMs: 180000 },
   keyboard: { enabled: true, scheme: 'heat' },
+  musicPlayer: { enabled: true, pollMs: 2500 },
 };
 const DEFAULT_STATE = { position: null, muted: false, doNotDisturb: false, firstRunDone: false, animMode: 'random' };
 
@@ -108,6 +109,12 @@ function loadConfig() {
   config.nudge = { ...DEFAULT_CONFIG.nudge, ...(user.nudge || {}) };
   config.showOnlyDuringSessions = { ...DEFAULT_CONFIG.showOnlyDuringSessions, ...(user.showOnlyDuringSessions || {}) };
   config.keyboard = { ...DEFAULT_CONFIG.keyboard, ...(user.keyboard || {}) };
+  config.musicPlayer = { ...DEFAULT_CONFIG.musicPlayer, ...(user.musicPlayer || {}) };
+}
+
+function saveConfig() {
+  try { fs.mkdirSync(WRITABLE_DIR, { recursive: true }); fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2)); }
+  catch (e) { console.error('[claude-spark] could not write config.json:', e.message); }
 }
 
 // ---------- global keyboard monitor ----------
@@ -163,6 +170,65 @@ function simulateTyping(n, interval) {
     if (i++ >= n || !win || !win.webContents) return clearInterval(t);
     win.webContents.send('keystroke');
   }, interval);
+}
+
+// ---------- local music mini-player ----------
+// Reads now-playing from native, scriptable players (Spotify, Apple Music) via
+// AppleScript. Guarded with System Events so it never *launches* a non-running
+// app. Browser/web audio (YouTube etc.) is intentionally not covered.
+const MUSIC_SCRIPT = [
+  'set spState to "none"', 'set spLine to ""', 'set muState to "none"', 'set muLine to ""',
+  'tell application "System Events"',
+  '  set spR to (exists process "Spotify")',
+  '  set muR to (exists process "Music")',
+  'end tell',
+  'if spR then', '  try',
+  '    tell application "Spotify"',
+  '      set spState to (player state as text)',
+  '      set spLine to "Spotify\t" & spState & "\t" & (name of current track) & "\t" & (artist of current track) & "\t" & (album of current track) & "\t" & (artwork url of current track)',
+  '    end tell', '  end try', 'end if',
+  'if muR then', '  try',
+  '    tell application "Music"',
+  '      set muState to (player state as text)',
+  '      set muLine to "Music\t" & muState & "\t" & (name of current track) & "\t" & (artist of current track) & "\t" & (album of current track) & "\t"',
+  '    end tell', '  end try', 'end if',
+  'if spState is "playing" then', '  return spLine',
+  'else if muState is "playing" then', '  return muLine',
+  'else if spState is "paused" then', '  return spLine',
+  'else if muState is "paused" then', '  return muLine',
+  'else', '  return "none"', 'end if',
+].join('\n');
+
+const MUSIC_APPS = { Spotify: true, Music: true };
+let musicTimer = null;
+
+function parseNowPlaying(stdout) {
+  const line = (stdout || '').trim();
+  if (!line || line === 'none') return null;
+  const p = line.split('\t');
+  if (p.length < 5) return null;
+  const [appName, st, title, artist, album, art] = p;
+  if (!MUSIC_APPS[appName] || (st !== 'playing' && st !== 'paused')) return null;
+  return { app: appName, state: st, title: title || '', artist: artist || '', album: album || '', art: (art || '').trim() };
+}
+
+function pollMusic() {
+  execFile('osascript', ['-e', MUSIC_SCRIPT], { timeout: 4000 }, (err, stdout) => {
+    // err => no scriptable player running, or Automation permission not granted yet.
+    if (win && win.webContents) win.webContents.send('now-playing', err ? null : parseNowPlaying(stdout));
+  });
+}
+
+function startMusicPolling() {
+  clearInterval(musicTimer);
+  musicTimer = null;
+  if (!config.musicPlayer || config.musicPlayer.enabled === false) {
+    if (win && win.webContents) win.webContents.send('now-playing', null);
+    return;
+  }
+  const pollMs = Math.max(1000, config.musicPlayer.pollMs || 2500);
+  musicTimer = setInterval(pollMusic, pollMs);
+  pollMusic();
 }
 
 function loadState() { state = { ...DEFAULT_STATE, ...readJson(STATE_PATH, {}) }; }
@@ -245,7 +311,10 @@ function createWindow() {
   win.setAlwaysOnTop(true, 'screen-saver');
   win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
   win.setIgnoreMouseEvents(true, { forward: true });
-  win.webContents.on('did-finish-load', () => win.webContents.send('config', { config, state }));
+  win.webContents.on('did-finish-load', () => {
+    win.webContents.send('config', { config, state });
+    if (config.musicPlayer && config.musicPlayer.enabled !== false) setTimeout(pollMusic, 400);
+  });
   // In dev, surface renderer console output to the terminal for debugging.
   if (!app.isPackaged) {
     win.webContents.on('console-message', (_e, level, message) => {
@@ -294,7 +363,18 @@ ipcMain.on('focus-terminal', (_e, sessionId) => {
 });
 ipcMain.on('quit-app', () => app.quit());
 
-ipcMain.on('show-context-menu', (_e, info) => {
+ipcMain.on('music-control', (_e, { app: appName, action } = {}) => {
+  if (!MUSIC_APPS[appName]) return;
+  const cmd = { playpause: 'playpause', next: 'next track', previous: 'previous track' }[action];
+  if (!cmd) return;
+  execFile('osascript', ['-e', `tell application "${appName}" to ${cmd}`], () => setTimeout(pollMusic, 250));
+});
+
+let lastTasksToday = 0; // cached from the renderer so the tray menu can show it too
+
+function buildSparkMenu(info) {
+  if (info && info.tasksToday != null) lastTasksToday = info.tasksToday;
+  const tasksToday = info && info.tasksToday != null ? info.tasksToday : lastTasksToday;
   const muted = !!state.muted, dnd = !!state.doNotDisturb;
   const installed = hooksInstalled();
   const now = Date.now();
@@ -303,11 +383,12 @@ ipcMain.on('show-context-menu', (_e, info) => {
     ? live.map((s) => ({ label: `   ${baseName(s.cwd) || 'session'} — ${humanizeUptime(now - s.start)}`, enabled: false }))
     : [{ label: '   none running', enabled: false }];
 
-  const menu = Menu.buildFromTemplate([
+  return Menu.buildFromTemplate([
     { label: `Claude Code running: ${live.length}`, enabled: false },
     ...sessionItems,
     { type: 'separator' },
-    { label: `Tasks today: ${info && info.tasksToday != null ? info.tasksToday : 0}`, enabled: false },
+    { label: `Tasks today: ${tasksToday}`, enabled: false },
+    { label: win && win.isVisible() ? 'Hide mascot' : 'Show mascot', click: () => toggleMascot() },
     { type: 'separator' },
     { label: muted ? 'Unmute' : 'Mute', click: () => { state.muted = !muted; persistState(); pushConfig(); } },
     { label: 'Do Not Disturb', type: 'checkbox', checked: dnd, click: () => { state.doNotDisturb = !dnd; persistState(); pushConfig(); } },
@@ -346,14 +427,42 @@ ipcMain.on('show-context-menu', (_e, info) => {
         else if (r === 'need-permission') { openAccessibilitySettings(); dialog.showMessageBoxSync({ type: 'info', title: 'Claude Spark', message: 'Accessibility permission needed', detail: 'Enable Claude Spark under Privacy & Security → Accessibility, then choose “Retry typing access” again.' }); }
         else if (r === 'disabled') dialog.showMessageBoxSync({ type: 'info', title: 'Claude Spark', message: 'Typing reactions are disabled in config.json (keyboard.enabled).' });
       } },
+    { label: 'Music mini-player', type: 'checkbox', checked: config.musicPlayer.enabled !== false, click: () => {
+        config.musicPlayer.enabled = !(config.musicPlayer.enabled !== false);
+        saveConfig(); pushConfig(); startMusicPolling();
+      } },
     { label: 'Open at login', type: 'checkbox', checked: loginEnabled(), click: () => setLogin(!loginEnabled()) },
     { label: 'Open config.json', click: () => shell.openPath(CONFIG_PATH) },
     { type: 'separator' },
     { label: 'About Claude Spark', click: () => showAbout() },
     { label: 'Quit Claude Spark', click: () => app.quit() },
   ]);
-  menu.popup({ window: win });
+}
+
+ipcMain.on('show-context-menu', (_e, info) => {
+  buildSparkMenu(info).popup({ window: win });
 });
+
+// ---------- menu-bar (status) icon ----------
+let tray = null;
+function toggleMascot() {
+  if (!win) return;
+  if (win.isVisible()) win.hide();
+  else { win.show(); win.setAlwaysOnTop(true, 'screen-saver'); }
+}
+function createTray() {
+  try {
+    const img = nativeImage.createFromPath(path.join(__dirname, 'assets', 'trayTemplate.png'));
+    img.setTemplateImage(true);
+    tray = new Tray(img);
+    tray.setToolTip('Claude Spark');
+    // Rebuild the menu on each open so uptime / labels stay fresh.
+    tray.on('click', () => tray.popUpContextMenu(buildSparkMenu()));
+    tray.on('right-click', () => tray.popUpContextMenu(buildSparkMenu()));
+  } catch (e) {
+    console.error('[claude-spark] tray unavailable:', e.message);
+  }
+}
 
 // ---------- HTTP server ----------
 function startServer() {
@@ -379,6 +488,22 @@ function startServer() {
       const interval = parseInt(url.searchParams.get('interval') || '90', 10) || 90;
       simulateTyping(n, interval);
       res.writeHead(200); res.end(`simulating ${n} keys @${interval}ms`);
+      return;
+    }
+
+    // Preview the music mini-player without a real player.
+    // GET /now-playing-test?title=…&artist=…&state=playing&app=Spotify   (or ?clear=1)
+    if (url.pathname === '/now-playing-test') {
+      const np = url.searchParams.get('clear') ? null : {
+        app: url.searchParams.get('app') || 'Spotify',
+        state: url.searchParams.get('state') || 'playing',
+        title: url.searchParams.get('title') || 'Test Song',
+        artist: url.searchParams.get('artist') || 'Test Artist',
+        album: url.searchParams.get('album') || 'Test Album',
+        art: url.searchParams.get('art') || '',
+      };
+      if (win && win.webContents) win.webContents.send('now-playing', np);
+      res.writeHead(200); res.end(np ? 'now-playing set' : 'cleared');
       return;
     }
     if (req.method === 'POST' && url.pathname === '/event') {
@@ -430,9 +555,11 @@ app.whenReady().then(() => {
   });
   if (process.platform === 'darwin' && app.dock) app.dock.hide();
   createWindow();
+  createTray();
   startServer();
   const kb = startKeyboard(false);
   if (kb === 'need-permission') setTimeout(promptKeyboardPermission, 1200);
+  startMusicPolling();
   setTimeout(maybeFirstRun, 800);
 });
 
@@ -448,5 +575,5 @@ function promptKeyboardPermission() {
   });
   if (choice === 0) { accessibilityTrusted(true); openAccessibilitySettings(); }
 }
-app.on('will-quit', stopKeyboard);
+app.on('will-quit', () => { stopKeyboard(); clearInterval(musicTimer); });
 app.on('window-all-closed', () => { /* stay alive */ });

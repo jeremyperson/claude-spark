@@ -13,6 +13,9 @@ contextBridge.exposeInMainWorld('spark', {
   // Right-click "Animations" menu.
   onPlayAnimation: (cb) => ipcRenderer.on('play-animation', (_e, name) => cb(name)),
   onAnimMode: (cb) => ipcRenderer.on('anim-mode', (_e, mode) => cb(mode)),
+  // Local music mini-player.
+  onNowPlaying: (cb) => ipcRenderer.on('now-playing', (_e, np) => cb(np)),
+  musicControl: (app, action) => ipcRenderer.send('music-control', { app, action }),
 
   // Window: capture mouse (true) vs click-through (false).
   setClickable: (clickable) => ipcRenderer.send('set-clickable', !!clickable),

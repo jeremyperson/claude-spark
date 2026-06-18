@@ -40,6 +40,20 @@
       <div id="mute" class="badge mute hidden">🔇</div>
       <div id="dnd" class="badge dnd hidden">🌙</div>
     </div>
+
+    <!-- Local audio mini-player (Spotify / Apple Music) — sits beneath the mascot -->
+    <div id="miniplayer" class="miniplayer">
+      <div id="mp-art" class="mp-art"><span class="mp-note">♪</span></div>
+      <div class="mp-info">
+        <div id="mp-title" class="mp-title"></div>
+        <div id="mp-artist" class="mp-artist"></div>
+        <div class="mp-controls">
+          <button id="mp-prev" class="mp-btn" title="Previous">⏮</button>
+          <button id="mp-playpause" class="mp-btn" title="Play / Pause">⏸</button>
+          <button id="mp-next" class="mp-btn" title="Next">⏭</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Sound element; src is set from config at runtime. -->

@@ -437,6 +437,45 @@ function setAnimMode(mode) {
 window.spark.onPlayAnimation(playNamed);
 window.spark.onAnimMode(setAnimMode);
 
+// ---------- music mini-player ----------
+const miniplayer = document.getElementById('miniplayer');
+const mpArt = document.getElementById('mp-art');
+const mpTitle = document.getElementById('mp-title');
+const mpArtist = document.getElementById('mp-artist');
+const mpPlayPause = document.getElementById('mp-playpause');
+let currentTrack = null; // { app, state, title, artist, art }
+let lastArt = '';
+
+window.spark.onNowPlaying((np) => {
+  if (!np) {
+    currentTrack = null;
+    miniplayer.classList.remove('playing');
+    return;
+  }
+  currentTrack = np;
+  miniplayer.classList.add('playing');
+  if (mpTitle.textContent !== np.title) mpTitle.textContent = np.title;
+  const artistLine = [np.artist, np.album].filter(Boolean).join(' — ');
+  if (mpArtist.textContent !== artistLine) mpArtist.textContent = artistLine;
+  mpPlayPause.textContent = np.state === 'playing' ? '⏸' : '▶';
+  // album art — only touch the DOM when it actually changes (avoids flicker)
+  const art = np.art || '';
+  if (art !== lastArt) {
+    lastArt = art;
+    if (art) { mpArt.style.backgroundImage = `url("${art}")`; mpArt.classList.add('has-art'); }
+    else { mpArt.style.backgroundImage = ''; mpArt.classList.remove('has-art'); }
+  }
+});
+
+function control(action) { if (currentTrack) window.spark.musicControl(currentTrack.app, action); }
+document.getElementById('mp-prev').addEventListener('click', (e) => { e.stopPropagation(); control('previous'); });
+document.getElementById('mp-next').addEventListener('click', (e) => { e.stopPropagation(); control('next'); });
+mpPlayPause.addEventListener('click', (e) => { e.stopPropagation(); control('playpause'); });
+
+// Keep the window click-through except while hovering the player.
+miniplayer.addEventListener('mouseenter', () => window.spark.setClickable(true));
+miniplayer.addEventListener('mouseleave', () => window.spark.setClickable(false));
+
 // ---------- boot ----------
 window.spark.onClaudeEvent(handleEvent);
 setState('idle');

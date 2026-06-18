@@ -46,6 +46,7 @@ module.exports = {
     'style.css',
     'renderer.js',
     'claudecode-color.svg',
+    'assets/**',
     'node_modules/uiohook-napi/**',
   ],
   asarUnpack: ['node_modules/uiohook-napi/**'],
