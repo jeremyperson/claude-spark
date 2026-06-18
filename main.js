@@ -51,7 +51,9 @@ const TERM_APP = {
 
 const DEFAULT_CONFIG = {
   corner: 'bottom-right',
-  enabledEvents: { Stop: true, StopFailure: true, Notification: true, UserPromptSubmit: true, SubagentStop: true, PreToolUse: true },
+  // SubagentStop off by default: subagent completions are internal steps, not
+  // something the user needs a notification for. Flip to true to re-enable.
+  enabledEvents: { Stop: true, StopFailure: true, Notification: true, UserPromptSubmit: true, SubagentStop: false, PreToolUse: true },
   sounds: {
     enabled: true,
     done: 'file:///System/Library/Sounds/Glass.aiff',

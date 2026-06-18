@@ -166,6 +166,10 @@ function handleEvent(payload) {
   const msg = (payload && payload.message) || '';
   const sid = payload && payload.session_id;
   const cwd = payload && payload.cwd;
+  const sess = sid ? sessions.get(sid) : null;
+  // Which Claude Code thread is this? Identify it by its project folder.
+  const proj = basename((sess && sess.cwd) || cwd);
+  const tag = proj ? proj + ' · ' : '';
   currentSession = sid || currentSession;
 
   if (event && !enabled(event)) return;
@@ -179,24 +183,21 @@ function handleEvent(payload) {
     case 'StopFailure':
       clearTimeout(longRunTimer);
       setState('error', 5000);
-      showBubble('Something broke ⚠️', 5000);
+      showBubble(`${tag}Something broke ⚠️`, 5000);
       play('error');
-      notify('Claude Code — error', basename(cwd) || 'A turn failed');
+      notify(proj || 'Claude Code', 'A turn failed ⚠️');
       break;
 
     case 'Stop': {
       clearTimeout(longRunTimer);
-      let line = 'Done! 🎉';
-      const s = sid && sessions.get(sid);
-      const proj = basename((s && s.cwd) || cwd);
-      if (s && s.start) line = `${proj ? proj + ' · ' : ''}done in ${fmtDuration(Date.now() - s.start)}`;
-      else if (proj) line = `${proj} · done 🎉`;
+      const elapsed = sess && sess.start ? ` in ${fmtDuration(Date.now() - sess.start)}` : '';
+      const line = `${tag}done${elapsed} 🎉`;
       if (sid) sessions.delete(sid);
       const n = bumpTasksToday();
       setState('done', 4000);
       showBubble(line, 4000);
       play('done');
-      notify('Claude Code — done', `${line}  ·  ${n} today`);
+      notify(proj || 'Claude Code', `Done${elapsed}  ·  ${n} today`);
       break;
     }
 
@@ -235,10 +236,10 @@ function handleEvent(payload) {
       const isPermission = /permission|approve|allow/.test(text);
       lastAttention = { sessionId: sid };
       setState('attention', cfg.nudge && cfg.nudge.enabled ? 60000 : 6000);
-      const line = isPermission ? 'Needs your OK 👀' : (msg ? trim(msg) : 'Ready for you ✨');
-      showBubble(line, 6000);
+      const what = isPermission ? 'Needs your OK 👀' : (msg ? trim(msg) : 'Ready for you ✨');
+      showBubble(`${tag}${what}`, 6000);
       play('attention');
-      notify('Claude Code', line);
+      notify(proj || 'Claude Code', what);
       startNudge();
       break;
     }

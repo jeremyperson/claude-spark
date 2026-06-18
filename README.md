@@ -52,13 +52,13 @@ Claude Spark listens for Claude&nbsp;Code events and reacts with a distinct anim
 |---|---|---|
 | You send a prompt | `UserPromptSubmit` | pulses & tilts — *"On it…"* |
 | It runs long (>2 min) | *(derived)* | shifts to a slower *"Still working…"* grind |
-| A subagent finishes | `SubagentStop` | gives a quick nod |
-| **Claude needs you** | `Notification` | bounces with a glow + chime, and **escalates** until you respond — *"Needs your OK 👀"* |
+| A subagent finishes | `SubagentStop` | *off by default — an internal step, not something you act on; enable in `config.json`* |
+| **Claude needs you** | `Notification` | bounces with a glow + chime, and **escalates** until you respond — *"project · Needs your OK 👀"* |
 | **Claude finishes** | `Stop` | spins with sparkles + chime — *"project · done in 2m14s"* |
-| A turn fails | `StopFailure` | red shake — *"Something broke ⚠️"* |
+| A turn fails | `StopFailure` | red shake — *"project · Something broke ⚠️"* |
 | A tool runs | `PreToolUse` | subtle micro-pulse *(off by default)* |
 
-Every reaction also fires a native macOS notification (unless muted), so you catch it even when looking away.
+Every reaction names **which Claude Code thread** it came from — the project folder shows in the bubble and is the title of the macOS notification — so when you're running several sessions you know exactly which one finished or needs you. (Reactions also fire a native notification unless muted, so you catch them when looking away.)
 
 ---
 

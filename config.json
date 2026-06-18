@@ -6,7 +6,7 @@
     "StopFailure": true,
     "Notification": true,
     "UserPromptSubmit": true,
-    "SubagentStop": true,
+    "SubagentStop": false,
     "PreToolUse": true
   },
   "sounds": {
